@@ -84,10 +84,6 @@ export class TasksService {
 		this.loadTasksFromStorage();
 
 		this.tasks$.subscribe((tasks) => {
-			const allTasks = Object.keys(tasks).flatMap((key) => {
-				return tasks[key as TaskStatusEnum];
-			});
-
 			const jsonString = JSON.stringify(tasks);
 			localStorage.setItem(TASKS_STORAGE_KEY, jsonString);
 		});

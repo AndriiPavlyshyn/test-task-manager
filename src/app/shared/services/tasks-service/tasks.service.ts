@@ -88,10 +88,8 @@ export class TasksService {
 				return tasks[key as TaskStatusEnum];
 			});
 
-			if (allTasks.length > 0) {
-				const jsonString = JSON.stringify(tasks);
-				localStorage.setItem(TASKS_STORAGE_KEY, jsonString);
-			}
+			const jsonString = JSON.stringify(tasks);
+			localStorage.setItem(TASKS_STORAGE_KEY, jsonString);
 		});
 	}
 

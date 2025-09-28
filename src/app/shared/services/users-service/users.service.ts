@@ -55,10 +55,8 @@ export class UsersService {
 		this.loadUsersFromStorage();
 
 	  this.users$.subscribe((users) => {
-		  if (users.length > 0) {
-			  const jsonString = JSON.stringify(users);
-			  localStorage.setItem(USERS_STORAGE_KEY, jsonString);
-		  }
+		  const jsonString = JSON.stringify(users);
+		  localStorage.setItem(USERS_STORAGE_KEY, jsonString);
 	  });
   }
 

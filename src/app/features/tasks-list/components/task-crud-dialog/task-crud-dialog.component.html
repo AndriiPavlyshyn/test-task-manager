@@ -1,0 +1,52 @@
+<nb-card class="w-150">
+	<nb-card-body class="flex flex-col gap-3">
+		@let title = windowTitle$ | async;
+		@let usersModel = usersModel$ | async;
+		@let assignableUsers = usersModel?.assignableUsers || [];
+		@let users = usersModel?.users || [];
+		@let showStatus = showStatusSelect$ | async;
+
+		<h4>{{ title }}</h4>
+
+		<form [formGroup]="taskFormGroup" class="task-crud flex flex-col gap-2">
+			<nb-form-field class="flex flex-col">
+				<label class="font-bold" for="dialog-name">Name:</label>
+				<input formControlName="name" fullWidth id="dialog-name" nbInput placeholder="Name" shape="semi-round" type="text">
+			</nb-form-field>
+
+			<nb-form-field class="flex flex-col">
+				<div class="font-bold">Performer:</div>
+				<nb-select formControlName="assignee" fullWidth placeholder="Performer" shape="semi-round">
+					<nb-option [value]="0">Unassigned</nb-option>
+					@for(user of getAvailableUsers(users, assignableUsers); track user.id) {
+						<nb-option [value]="user.id">{{ user.name | titlecase }}</nb-option>
+					}
+				</nb-select>
+			</nb-form-field>
+
+			@if(showStatus) {
+				<nb-form-field class="flex flex-col">
+					<div class="font-bold">Status:</div>
+					<nb-select formControlName="status" fullWidth placeholder="Status" shape="semi-round">
+						@for(statusItem of statuses$ | async; track statusItem.status) {
+							<nb-option [disabled]="statusItem.isDisabled" [value]="statusItem.status">
+								{{ statusItem.title | titlecase }}
+							</nb-option>
+						}
+					</nb-select>
+				</nb-form-field>
+			}
+
+			<nb-form-field class="flex flex-col">
+				<label class="font-bold" for="dialog-description">Description:</label>
+				<textarea formControlName="description" fullWidth id="dialog-description" nbInput placeholder="Description" shape="semi-round"></textarea>
+			</nb-form-field>
+		</form>
+	</nb-card-body>
+
+	<nb-card-footer class="flex justify-end">
+		<button (click)="submit()" [disabled]="taskFormGroup.invalid" nbButton shape="semi-round" status="primary">
+			<span><nb-icon icon="plus"></nb-icon> {{ title }}</span>
+		</button>
+	</nb-card-footer>
+</nb-card>

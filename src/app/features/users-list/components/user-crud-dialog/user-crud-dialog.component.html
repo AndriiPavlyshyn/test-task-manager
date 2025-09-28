@@ -1,0 +1,17 @@
+<nb-card class="w-150">
+	<nb-card-body class="flex flex-col gap-3">
+		@let title = windowTitle$ | async;
+
+		<h4>{{ title }}</h4>
+
+		<form [formGroup]="userFormGroup" class="task-crud flex flex-col gap-2">
+			<input formControlName="name" fullWidth nbInput placeholder="Name" shape="semi-round" type="text">
+		</form>
+	</nb-card-body>
+
+	<nb-card-footer class="flex justify-end">
+		<button (click)="submit()" [disabled]="userFormGroup.invalid" nbButton shape="semi-round" status="primary">
+			<span><nb-icon icon="plus"></nb-icon> {{ title }}</span>
+		</button>
+	</nb-card-footer>
+</nb-card>

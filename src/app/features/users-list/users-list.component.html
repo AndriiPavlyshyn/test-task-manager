@@ -1,0 +1,39 @@
+<div class="container mx-auto">
+	<nb-layout>
+		<nb-layout-column>
+			<nb-card>
+				<nb-card-header>
+					Users
+				</nb-card-header>
+
+				@let users = users$ | async;
+
+				@if(users?.length) {
+					<nb-list>
+						@for(user of users; track user.id) {
+							<nb-list-item>
+								<div class="flex flex-col w-full">
+									<div class="flex justify-between items-center w-full mb-2">
+										<div class="name">{{ user.name }}</div>
+
+										<div class="buttons gap-2">
+											<button (click)="editUser(user.id)" nbButton ghost status="basic">Edit user<nb-icon icon="edit"></nb-icon></button>
+											<button (click)="deleteUser(user.id)" nbButton ghost status="danger">Delete user<nb-icon icon="trash"></nb-icon></button>
+										</div>
+									</div>
+
+									<div class="name mb-3">Tasks of <strong>{{ user.name }}</strong></div>
+									<div class="overflow-hidden overflow-y-scroll h-[500px] rounded-lg">
+										<app-tasks-list [userId]="user.id"></app-tasks-list>
+									</div>
+								</div>
+							</nb-list-item>
+						}
+					</nb-list>
+				} @else {
+					<div class="text-center py-5">No users yet</div>
+				}
+			</nb-card>
+		</nb-layout-column>
+	</nb-layout>
+</div>

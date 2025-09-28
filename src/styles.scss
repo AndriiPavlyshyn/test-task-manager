@@ -1,0 +1,5 @@
+@use "tailwindcss";
+
+nb-layout-header nav {
+  @apply w-full bg-white flex !justify-between;
+}

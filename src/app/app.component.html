@@ -1,0 +1,26 @@
+<nb-layout>
+	<nb-layout-header fixed>
+		<div class="left font-bold">Task manager</div>
+
+		<div class="center">
+			<nb-actions size="medium">
+				<nb-action class="cursor-pointer" routerLink="tasks" routerLinkActive="active">Tasks</nb-action>
+				<nb-action class="cursor-pointer" routerLink="users" routerLinkActive="active"> Users</nb-action>
+			</nb-actions>
+		</div>
+
+		<div class="right flex gap-3">
+			<button (click)="createUser()" nbButton shape="semi-round">
+				<span><nb-icon icon="plus"></nb-icon> Add user</span>
+			</button>
+
+			<button (click)="createService()" nbButton shape="semi-round" status="primary">
+				<span><nb-icon icon="plus"></nb-icon> Add task</span>
+			</button>
+		</div>
+	</nb-layout-header>
+
+	<nb-layout-column>
+		<router-outlet></router-outlet>
+	</nb-layout-column>
+</nb-layout>

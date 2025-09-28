@@ -1,0 +1,85 @@
+<div class="container mx-auto">
+	@let model = model$ | async;
+	@let tasks = model?.tasks;
+	@let assignableUsers = model?.usersModel?.assignableUsers;
+	@let users = model?.usersModel?.users;
+
+	<nb-layout>
+		@for(status of statuses; track status) {
+			<nb-layout-column>
+				<nb-card class="min-h-full">
+					<nb-card-body>
+						<h5>{{ status.title | titlecase }}</h5>
+
+						@if(tasks) {
+							@let currentListTasks = tasks[status.status];
+
+							<ul class="tasks-list mt-5">
+								@if(currentListTasks.length) {
+									@for(task of currentListTasks; track task.creationDate) {
+										@let modificationDate = task.modificationDate;
+										@let description = task.description;
+
+										<li class="">
+											<nb-card class="!rounded-lg">
+												<nb-card-header>
+													<div class="flex flex-col">
+														<strong>{{ task.name }}</strong>
+														<p><strong>Created:</strong> {{ task.creationDate | date:'medium' }}</p>
+
+														@if(description) {
+															<p><strong>Description:</strong> {{ description }}</p>
+														}
+
+														@if(modificationDate) {
+															<p><strong>Last modification:</strong> {{ modificationDate | date:'medium' }}</p>
+														}
+													</div>
+												</nb-card-header>
+
+												<nb-card-footer class="flex gap-2">
+													<div class="selects w-full flex flex-col gap-2">
+														@if(task.assignee !== 0) {
+															<div class="flex flex-col">
+																<div class="font-bold">Status:</div>
+																<nb-select (selectedChange)="changeStatus(task, $event)" [ngModel]="task.status" placeholder="Status" shape="semi-round">
+																	@for(statusItem of task.statuses; track statusItem.item.status) {
+																		<nb-option [disabled]="statusItem.disabled" [value]="statusItem.item.status">
+																			{{ statusItem.item.title | titlecase }}
+																		</nb-option>
+																	}
+																</nb-select>
+															</div>
+														}
+
+														<div class="flex flex-col">
+															<div class="font-bold">Performer:</div>
+
+															<nb-select (selectedChange)="assignUser(task, $event)" [ngModel]="task.assignee" placeholder="Performers" shape="semi-round">
+																<nb-option [value]="0">Unassigned</nb-option>
+																@for(user of getAvailableUsers(task, users, assignableUsers); track user.id) {
+																	<nb-option [value]="user.id">{{ user.name | titlecase }}</nb-option>
+																}
+															</nb-select>
+														</div>
+													</div>
+
+													<div class="flex items-center gap-2">
+														<button (click)="editTask(task)" nbButton ghost status="basic"><nb-icon icon="edit"></nb-icon></button>
+														<button (click)="deleteTask(task)" nbButton ghost status="danger"><nb-icon icon="trash"></nb-icon></button>
+													</div>
+												</nb-card-footer>
+											</nb-card>
+										</li>
+									}
+								} @else {
+									<li class="empty font-medium py-5">No tasks in the {{ status.title }} list</li>
+								}
+							</ul>
+						}
+					</nb-card-body>
+				</nb-card>
+			</nb-layout-column>
+		}
+	</nb-layout>
+</div>

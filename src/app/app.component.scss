@@ -1,0 +1,15 @@
+.active {
+  position: relative;
+
+  &::before {
+	content: '';
+	width: 5px;
+	height: 5px;
+	border-radius: 100%;
+	background-color: #ccc;
+	position: absolute;
+	bottom: -3px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  }
+}
